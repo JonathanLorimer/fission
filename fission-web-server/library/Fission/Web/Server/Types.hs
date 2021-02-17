@@ -15,7 +15,7 @@ import qualified RIO.Text                                    as Text
 import           System.Random                               as Random
 
 import           Database.Esqueleto                          as SQL hiding
-                                                                    ((<&>))
+                                                                     ((<&>))
 
 import           Servant.Client
 import qualified Servant.Client.Streaming                    as Stream
@@ -23,7 +23,7 @@ import           Servant.Server.Experimental.Auth
 import qualified Servant.Types.SourceT                       as Stream
 
 import           Network.AWS                                 as AWS hiding
-                                                                    (Request,
+                                                                     (Request,
                                                                      Seconds)
 import           Network.AWS.Route53
 
@@ -67,9 +67,9 @@ import           Fission.Web.Server.IPFS.Streaming.Pin.Types
 import qualified Fission.Web.Server.Heroku.AddOn.Creator     as Heroku.AddOn
 import           Fission.Web.Server.Heroku.Types             as Heroku
 
+import           Fission.Web.Server.Authorization.Types
 import           Fission.Web.Server.AWS                      as AWS
 import           Fission.Web.Server.AWS.Route53              as Route53
-import           Fission.Web.Server.Authorization.Types
 
 import           Fission.Web.Server.Auth                     as Auth
 import qualified Fission.Web.Server.Auth.DID                 as Auth.DID
