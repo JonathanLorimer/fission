@@ -7,6 +7,8 @@ module Fission.CLI.Environment.Path
   , getSigningKeyPath
   , globalUCANDir
   , globalWNFSDir
+  , ucanStorePath
+  , wnfsKeyStorePath
   ) where
 
 import qualified Network.IPFS.BinPath.Types    as IPFS
@@ -59,3 +61,13 @@ globalWNFSDir :: MonadEnvironment m => m FilePath
 globalWNFSDir = do
   dir <- getGlobalPath
   return $ dir </> "wnfs"
+
+wnfsKeyStorePath :: MonadEnvironment m => m FilePath
+wnfsKeyStorePath = do
+  wnfsDir <- globalWNFSDir
+  return (wnfsDir </> "store.json")
+
+ucanStorePath :: MonadEnvironment m => m FilePath
+ucanStorePath = do
+  ucanDir <- globalUCANDir
+  return (ucanDir </> "store.json")
