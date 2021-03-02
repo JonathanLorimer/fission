@@ -1,6 +1,10 @@
 module Fission.Web.Server.Swagger (handler) where
 
 import           Data.Swagger
+import qualified Data.Version                                        as Version
+import qualified Paths_fission_web_server                            as Server
+
+import qualified RIO.Text                                            as Text
 
 import           Servant
 import           Servant.Swagger
@@ -8,8 +12,6 @@ import qualified Servant.Swagger.Internal.TypeLevel.API              as Servant.
 import           Servant.Swagger.UI.ReDoc
 
 import           Fission.Prelude
-
-import qualified Fission.Web.Server.Meta                             as Meta
 
 import qualified Fission.Web.API.App.Types                           as API
 import qualified Fission.Web.API.DNS.Types                           as API
@@ -53,16 +55,11 @@ fission proxy appHost =
     |> host               ?~ Host (Web.getRawHost appHost) Nothing
     |> schemes            ?~ [Https]
     |> info . title       .~ "The Fission API"
-    |> info . version     .~ version'
+    |> info . version     .~ Text.pack (Version.showVersion Server.version)
     |> info . description ?~ blurb
     |> info . contact     ?~ fissionContact
     |> info . license     ?~ projectLicense
   where
-    version' =
-      Meta.package
-        |> bind Meta.version
-        |> maybe "unknown" identity
-
     fissionContact =
       mempty
         |> name  ?~"Team Fission"
