@@ -37,8 +37,21 @@ signaturesMatch jwt prfJWT =
 resourceInSubset :: JWT -> JWT -> Either Error JWT
 resourceInSubset jwt prfJWT =
   case ((jwt |> claims |> resource), (prfJWT |> claims |> resource)) of
+    (_, Just Complete) ->
+      Right jwt
+
     (Just (Subset (FissionFileSystem path)), Just (Subset (FissionFileSystem proofPath))) ->
-      if path `List.isPrefixOf` proofPath -- NOTE `List` because FilePath ~ String
+      if proofPath `List.isPrefixOf` path -- NOTE `List` because FilePath ~ String
+        then Right jwt
+        else Left ScopeOutOfBounds
+
+    (Just (Subset (FissionApp appScope)), Just (Subset (FissionApp appProof))) ->
+      if appProof == Complete || appScope == appProof
+        then Right jwt
+        else Left ScopeOutOfBounds
+
+    (Just (Subset (RegisteredDomain domainScope)), Just (Subset (RegisteredDomain domainProof))) ->
+      if domainProof == Complete || domainScope == domainProof
         then Right jwt
         else Left ScopeOutOfBounds
 
